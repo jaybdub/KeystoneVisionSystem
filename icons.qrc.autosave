@@ -1,0 +1,8 @@
+<RCC>
+    <qresource prefix="/icons/communication">
+        <file>images/1414359054_communication.png</file>
+    </qresource>
+    <qresource prefix="/icons/config">
+        <file>images/1414359012_config.png</file>
+    </qresource>
+</RCC>
