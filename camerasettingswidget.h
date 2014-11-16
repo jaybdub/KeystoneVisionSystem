@@ -6,7 +6,8 @@
 #include <QSlider>
 #include <QCheckBox>
 #include <QSize>
-#include <QVBoxLayout>
+#include <QGridLayout>
+#include <QLabel>
 
 class CameraSettingsWidget : public QWidget
 {
@@ -29,21 +30,35 @@ signals:
     void focusAbsoluteChanged(int focusAbsolute);
 
 public slots:
-    void handleDeviceIdChanged(int deviceId);
-    void handleResolutionChanged(QSize resolution);
-    void handleSharpnessChanged(int sharpness);
-    void handleBrightnessChanged(int brightness);
-    void handleAutofocusEnabledChanged(bool autofocusEnabled);
-    void handleFocusAbsoluteChanged(int focusAbsolute);
-
+    void setDeviceId(int deviceId);
+    void setResolution(QSize resolution);
+    void setSharpness(int sharpness);
+    void setBrightness(int brightness);
+    void setAutofocusEnabled(bool autofocusEnabled);
+    void setFocusAbsolute(int focusAbsolute);
+    void setDeviceIdOptions(QList<int> deviceIds);
+    void setResolutionOptions(QList<QSize> resolutions);
+private slots:
+    void handleDeviceIdComboBoxIndexChanged();
+    void handleResolutionComboBoxIndexChanged();
+    void handleSharpnessSliderChanged();
+    void handleBrightnessSliderChanged();
+    void handleAutofocusEnabledCheckBoxChanged();
+    void handleFocusAbsoluteSliderChanged();
+    void disableFocusAbsoluteSlider(bool disabled);
 private:
+    QLabel *deviceIdLabel;
+    QLabel *resolutionLabel;
+    QLabel *sharpnessLabel;
+    QLabel *brightnessLabel;
+    QLabel *focusAbsoluteLabel;
     QComboBox *deviceIdComboBox;
     QComboBox *resolutionComboBox;
     QSlider *sharpnessSlider;
     QSlider *brightnessSlider;
     QCheckBox *autofocusEnabledCheckBox;
     QSlider *focusAbsoluteSlider;
-    QVBoxLayout *mainVBoxLayout;
+    QGridLayout *mainGridLayout;
 };
 
 #endif // CAMERASETTINGSWIDGET_H

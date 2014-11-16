@@ -1,10 +1,20 @@
 #ifndef CAMERAVIEWPORTWIDGET_H
 #define CAMERAVIEWPORTWIDGET_H
 
-class CameraViewportWidget
+#include <QWidget>
+#include <QLabel>
+
+class CameraViewportWidget : public QWidget
 {
+    Q_OBJECT
 public:
-    CameraViewportWidget();
+    explicit CameraViewportWidget(QWidget *parent = 0);
+
+signals:
+
+public slots:
+private:
+
 };
 
 #endif // CAMERAVIEWPORTWIDGET_H

@@ -4,7 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core gui serialport
+QT       += core gui serialport multimedia multimediawidgets
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -18,9 +18,6 @@ SOURCES += main.cpp\
     serialportlistwidget.cpp \
     requesthandlerwidget.cpp \
     communicationwidget.cpp \
-    camera.cpp \
-    cameratoolbarwidget.cpp \
-    cameraviewportwidget.cpp \
     linuxvideocontrol.cpp \
     markerdetector.cpp \
     serialportsettingswidget.cpp \
@@ -29,16 +26,14 @@ SOURCES += main.cpp\
     markerrequestqueue.cpp \
     markerrequest.cpp \
     pose.cpp \
-    camerasettingswidget.cpp
+    camerasettingswidget.cpp \
+    cameraviewportwidget.cpp
 
 HEADERS  += mainwindow.h \
     serialportwidget.h \
     serialportlistwidget.h \
     requesthandlerwidget.h \
     communicationwidget.h \
-    camera.h \
-    cameratoolbarwidget.h \
-    cameraviewportwidget.h \
     linuxvideocontrol.h \
     markerdetector.h \
     serialportsettingswidget.h \
@@ -47,7 +42,8 @@ HEADERS  += mainwindow.h \
     markerrequestqueue.h \
     markerrequest.h \
     pose.h \
-    camerasettingswidget.h
+    camerasettingswidget.h \
+    cameraviewportwidget.h
 
 FORMS    += mainwindow.ui
 

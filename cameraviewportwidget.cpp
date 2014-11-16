@@ -1,5 +1,6 @@
 #include "cameraviewportwidget.h"
 
-CameraViewportWidget::CameraViewportWidget()
+CameraViewportWidget::CameraViewportWidget(QWidget *parent) :
+    QWidget(parent)
 {
 }

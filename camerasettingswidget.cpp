@@ -3,21 +3,39 @@
 CameraSettingsWidget::CameraSettingsWidget(QWidget *parent) :
     QWidget(parent)
 {
+    deviceIdLabel = new QLabel("Device Id",this);
     deviceIdComboBox = new QComboBox(this);
+    resolutionLabel = new QLabel("Resolution",this);
     resolutionComboBox = new QComboBox(this);
+    sharpnessLabel = new QLabel("Sharpness",this);
     sharpnessSlider = new QSlider(Qt::Horizontal, this);
+    brightnessLabel = new QLabel("Brightness",this);
     brightnessSlider = new QSlider(Qt::Horizontal, this);
+    focusAbsoluteLabel = new QLabel("Focus",this);
     focusAbsoluteSlider = new QSlider(Qt::Horizontal, this);
     autofocusEnabledCheckBox = new QCheckBox("Autofocus Enabled", this);
 
-    mainVBoxLayout = new QVBoxLayout(this);
-    this->setLayout(mainVBoxLayout);
-    mainVBoxLayout->addWidget(deviceIdComboBox);
-    mainVBoxLayout->addWidget(resolutionComboBox);
-    mainVBoxLayout->addWidget(sharpnessSlider);
-    mainVBoxLayout->addWidget(brightnessSlider);
-    mainVBoxLayout->addWidget(focusAbsoluteSlider);
-    mainVBoxLayout->addWidget(autofocusEnabledCheckBox);
+    mainGridLayout = new QGridLayout(this);
+    this->setLayout(mainGridLayout);
+    mainGridLayout->addWidget(deviceIdLabel,0,0);
+    mainGridLayout->addWidget(deviceIdComboBox,0,1);
+    mainGridLayout->addWidget(resolutionLabel,1,0);
+    mainGridLayout->addWidget(resolutionComboBox,1,1);
+    mainGridLayout->addWidget(sharpnessLabel,2,0);
+    mainGridLayout->addWidget(sharpnessSlider,2,1);
+    mainGridLayout->addWidget(brightnessLabel,3,0);
+    mainGridLayout->addWidget(brightnessSlider,3,1);
+    mainGridLayout->addWidget(focusAbsoluteLabel,4,0);
+    mainGridLayout->addWidget(focusAbsoluteSlider,4,1);
+    mainGridLayout->addWidget(autofocusEnabledCheckBox,5,0,1,2);
+
+    connect(deviceIdComboBox,SIGNAL(currentIndexChanged(int)),this,SLOT(handleDeviceIdComboBoxIndexChanged()));
+    connect(resolutionComboBox,SIGNAL(currentIndexChanged(int)),this,SLOT(handleResolutionComboBoxIndexChanged()));
+    connect(sharpnessSlider,SIGNAL(valueChanged(int)),this,SLOT(handleSharpnessSliderChanged()));
+    connect(brightnessSlider,SIGNAL(valueChanged(int)),this,SLOT(handleBrightnessSliderChanged()));
+    connect(focusAbsoluteSlider,SIGNAL(valueChanged(int)),this,SLOT(handleFocusAbsoluteSliderChanged()));
+    connect(autofocusEnabledCheckBox,SIGNAL(toggled(bool)),this,SLOT(handleAutofocusEnabledCheckBoxChanged()));
+    connect(autofocusEnabledCheckBox,SIGNAL(toggled(bool)),this,SLOT(disableFocusAbsoluteSlider(bool)));
 }
 
 int CameraSettingsWidget::deviceId()
@@ -55,12 +73,12 @@ int CameraSettingsWidget::focusAbsolute()
 }
 
 
-void CameraSettingsWidget::handleDeviceIdChanged(int deviceId)
+void CameraSettingsWidget::setDeviceId(int deviceId)
 {
     deviceIdComboBox->setCurrentText(QString::number(deviceId));
 }
 
-void CameraSettingsWidget::handleResolutionChanged(QSize resolution)
+void CameraSettingsWidget::setResolution(QSize resolution)
 {
     // "<width>x<height>"
     resolutionComboBox->setCurrentText(QString::number(resolution.width())
@@ -68,22 +86,78 @@ void CameraSettingsWidget::handleResolutionChanged(QSize resolution)
                                        +QString::number(resolution.height()));
 }
 
-void CameraSettingsWidget::handleSharpnessChanged(int sharpness)
+void CameraSettingsWidget::setSharpness(int sharpness)
 {
     sharpnessSlider->setValue(sharpness);
 }
 
-void CameraSettingsWidget::handleBrightnessChanged(int brightness)
+void CameraSettingsWidget::setBrightness(int brightness)
 {
     brightnessSlider->setValue(brightness);
 }
 
-void CameraSettingsWidget::handleAutofocusEnabledChanged(bool autofocusEnabled)
+void CameraSettingsWidget::setAutofocusEnabled(bool autofocusEnabled)
 {
     autofocusEnabledCheckBox->setChecked(autofocusEnabled);
 }
 
-void CameraSettingsWidget::handleFocusAbsoluteChanged(int focusAbsolute)
+void CameraSettingsWidget::setFocusAbsolute(int focusAbsolute)
 {
     focusAbsoluteSlider->setValue(focusAbsolute);
+}
+
+void CameraSettingsWidget::setDeviceIdOptions(QList<int> deviceIds)
+{
+    QList<QString> deviceIdStrings;
+    for(int i=0;i<deviceIds.length();i++)
+        deviceIdStrings.append(QString::number(deviceIds.at(i)));
+
+    deviceIdComboBox->clear();
+    deviceIdComboBox->addItems(deviceIdStrings);
+}
+
+void CameraSettingsWidget::setResolutionOptions(QList<QSize> resolutions)
+{
+    QList<QString> resolutionStrings;
+    for(int i=0;i<resolutions.length();i++){
+        resolutionStrings.append(QString::number(resolutions.at(i).width())+QString("x")
+                                 +QString::number(resolutions.at(i).height()));
+    }
+
+    resolutionComboBox->clear();
+    resolutionComboBox->addItems(resolutionStrings);
+}
+
+void CameraSettingsWidget::handleDeviceIdComboBoxIndexChanged()
+{
+    emit deviceIdChanged(deviceId());
+}
+
+void CameraSettingsWidget::handleResolutionComboBoxIndexChanged()
+{
+    emit resolutionChanged(resolution());
+}
+
+void CameraSettingsWidget::handleSharpnessSliderChanged()
+{
+    emit sharpnessChanged(sharpness());
+}
+
+void CameraSettingsWidget::handleBrightnessSliderChanged()
+{
+    emit brightnessChanged(brightness());
+}
+
+void CameraSettingsWidget::handleAutofocusEnabledCheckBoxChanged()
+{
+    emit autofocusEnabledChanged(autofocusEnabled());
+}
+
+void CameraSettingsWidget::handleFocusAbsoluteSliderChanged()
+{
+    emit focusAbsoluteChanged(focusAbsolute());
+}
+void CameraSettingsWidget::disableFocusAbsoluteSlider(bool disabled)
+{
+    focusAbsoluteSlider->setDisabled(disabled);
 }
