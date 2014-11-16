@@ -13,8 +13,9 @@ public:
 signals:
 
 public slots:
-private:
 
+private:
+    QLabel *imageLabel;
 };
 
 #endif // CAMERAVIEWPORTWIDGET_H

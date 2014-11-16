@@ -17,11 +17,7 @@
 #include "marker.h"
 #include "pose.h"
 #include "camerasettingswidget.h"
-#include <QCameraViewfinder>
-#include <QCamera>
-#include <QCameraImageCapture>
-#include <QCameraInfo>
-#include <QCameraInfoControl>
+#include "opencvcamera.h"
 
 int main(int argc, char *argv[])
 {
@@ -48,20 +44,7 @@ int main(int argc, char *argv[])
     csw->setResolutionOptions(resolutions);
     csw->show();
 
-    QCamera *camera = new QCamera;
-
-    QCameraViewfinder *viewfinder = new QCameraViewfinder();
-    viewfinder->show();
-
-    QCameraInfo *caminfo = new QCameraInfo(camera);
-    qDebug() << caminfo->deviceName();
-    camera->setViewfinder(viewfinder);
-
-    QCameraImageCapture *imageCapture = new QCameraImageCapture(camera);
-
-    camera->setCaptureMode(QCamera::CaptureStillImage);
-    camera->start();
-    imageCapture->capture();
+    OpenCvCamera *cvcam = new OpenCvCamera;
 
     qDebug() << marker->toQString();
     SerialPortTerminalWidget *sptw = new SerialPortTerminalWidget;
