@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QLabel>
+#include <QVBoxLayout>
 
 class CameraViewportWidget : public QWidget
 {
@@ -13,9 +14,12 @@ public:
 signals:
 
 public slots:
+    void setImage(QImage *image);
 
 private:
+    QVBoxLayout *mainVBoxLayout;
     QLabel *imageLabel;
+    QImage *qImage;
 };
 
 #endif // CAMERAVIEWPORTWIDGET_H

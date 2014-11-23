@@ -51,3 +51,8 @@ FORMS    += mainwindow.ui
 
 RESOURCES += \
     images.qrc
+
+unix|win32: LIBS += -L/usr/local/lib -laruco -lopencv_highgui -lopencv_core
+
+INCLUDEPATH += /usr/local/include
+DEPENDPATH += /usr/local/include

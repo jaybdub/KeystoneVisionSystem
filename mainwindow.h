@@ -2,8 +2,13 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
-#include "SerialPortWidget.h"
+//#include "SerialPortWidget.h"
 #include <QGridLayout>
+#include "camerasettingswidget.h"
+#include "cameraviewportwidget.h"
+#include "opencvcamera.h"
+#include <QTimer>
+#include <QHBoxLayout>
 
 namespace Ui {
 class MainWindow;
@@ -18,7 +23,12 @@ public:
     ~MainWindow();
 
 private:
+    CameraSettingsWidget *cameraSettingsWidget;
+    CameraViewportWidget *cameraViewportWidget;
+    OpenCvCamera *openCvCamera;
+    QTimer *cameraQTimer;
     Ui::MainWindow *ui;
+    QHBoxLayout *mainQHBoxLayout;
 };
 
 #endif // MAINWINDOW_H

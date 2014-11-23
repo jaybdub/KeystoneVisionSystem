@@ -3,23 +3,26 @@
 
 #include <QObject>
 #include <QImage>
+#include <opencv2/opencv.hpp>
 
 class OpenCvCamera : public QObject
 {
     Q_OBJECT
 public:
     explicit OpenCvCamera(QObject *parent = 0);
-    //inline QImage OpenCvCamera::cvMatToQImage( const cv::Mat &inMat );
+    ~OpenCvCamera();
+    inline QImage cvMatToQImage( const cv::Mat &inMat );
     int getDeviceId();
     QSize getResolution();
+    QImage qImage;
 
 signals:
     void deviceIdChanged(int deviceId);
     void resolutionChanged(QSize resolution);
-    void newFrameGrabbed(QImage *image);
+    void newImageAvailable(QImage *image);
+    void newImageAvailable(cv::Mat *image);
     void deviceClosed();
     void deviceOpened();
-//    void newImage(cv::Mat *image);
 
 public slots:
     void grabFrame();
@@ -30,9 +33,14 @@ public slots:
     void changeDevice(int deviceId);
     void reopenDevice();
 
+private slots:
+    void applySetResolution();
+
 private:
     int deviceId;
     QSize resolution;
+    //inline QImage OpenCvCamera::cvMatToQImage( const cv::Mat &inMat );
+    cv::Mat cvImage;
     cv::VideoCapture videoCapture;
 };
 

@@ -3,6 +3,13 @@
 OpenCvCamera::OpenCvCamera(QObject *parent) :
     QObject(parent)
 {
+    resolution = QSize(640,480);
+    connect(this,SIGNAL(resolutionChanged(QSize)),this,SLOT(applySetResolution()));
+    connect(this,SIGNAL(deviceIdChanged(int)),this,SLOT(reopenDevice()));
+    connect(this,SIGNAL(deviceOpened()),this,SLOT(applySetResolution()));
+}
+OpenCvCamera::~OpenCvCamera(){
+    videoCapture.release();
 }
 
 int OpenCvCamera::getDeviceId()
@@ -17,7 +24,14 @@ QSize OpenCvCamera::getResolution()
 
 void OpenCvCamera::grabFrame()
 {
-    //Code to grab frame
+    if(videoCapture.isOpened()) {
+        //_video_capture.
+        //_video_capture >> _image;
+        videoCapture.read(cvImage);
+        qImage = cvMatToQImage(cvImage);
+        emit newImageAvailable(&cvImage);
+        emit newImageAvailable(&qImage);
+    }
 }
 
 void OpenCvCamera::setDeviceId(int deviceId)
@@ -35,18 +49,27 @@ void OpenCvCamera::setResolution(QSize resolution)
         emit resolutionChanged(this->resolution);
     }
 }
+void OpenCvCamera::applySetResolution()
+{
+    if(videoCapture.isOpened()){
+        connect(this,SIGNAL(deviceOpened()),this,SLOT(applySetResolution()));
+        videoCapture.set(CV_CAP_PROP_FRAME_WIDTH,resolution.width());
+        videoCapture.set(CV_CAP_PROP_FRAME_HEIGHT, resolution.height());
+    }
+}
 
-void OpenCvCamera::openDevice()
+void OpenCvCamera::openDevice()//close device
+//emit device closed
 {
     //open this->deviceId();
-    //set resolution etc.
-    //emit device opened
+    if(videoCapture.open(deviceId))
+        emit deviceOpened();
 }
 
 void OpenCvCamera::closeDevice()
 {
-    //close device
-    //emit device closed
+    videoCapture.release();
+    emit deviceClosed();
 }
 
 void OpenCvCamera::reopenDevice()
@@ -58,52 +81,51 @@ void OpenCvCamera::reopenDevice()
 void OpenCvCamera::changeDevice(int deviceId)
 {
     this->setDeviceId(deviceId);
-
 }
 
-//inline QImage OpenCvCamera::cvMatToQImage( const cv::Mat &inMat )
-//{
-//    switch ( inMat.type() )
-//    {
-//       // 8-bit, 4 channel
-//       case CV_8UC4:
-//       {
-//          QImage image( inMat.data, inMat.cols, inMat.rows, inMat.step, QImage::Format_RGB32 );
+inline QImage OpenCvCamera::cvMatToQImage( const cv::Mat &inMat )
+{
+    switch ( inMat.type() )
+    {
+       // 8-bit, 4 channel
+       case CV_8UC4:
+       {
+          QImage image( inMat.data, inMat.cols, inMat.rows, inMat.step, QImage::Format_RGB32 );
 
-//          return image;
-//       }
+          return image;
+       }
 
-//       // 8-bit, 3 channel
-//       case CV_8UC3:
-//       {
-//          QImage image( inMat.data, inMat.cols, inMat.rows, inMat.step, QImage::Format_RGB888 );
+       // 8-bit, 3 channel
+       case CV_8UC3:
+       {
+          QImage image( inMat.data, inMat.cols, inMat.rows, inMat.step, QImage::Format_RGB888 );
 
-//          return image.rgbSwapped();
-//       }
+          return image.rgbSwapped();
+       }
 
-//       // 8-bit, 1 channel
-//       case CV_8UC1:
-//       {
-//          static QVector<QRgb>  sColorTable;
+       // 8-bit, 1 channel
+       case CV_8UC1:
+       {
+          static QVector<QRgb>  sColorTable;
 
-//          // only create our color table once
-//          if ( sColorTable.isEmpty() )
-//          {
-//             for ( int i = 0; i < 256; ++i )
-//                sColorTable.push_back( qRgb( i, i, i ) );
-//          }
+          // only create our color table once
+          if ( sColorTable.isEmpty() )
+          {
+             for ( int i = 0; i < 256; ++i )
+                sColorTable.push_back( qRgb( i, i, i ) );
+          }
 
-//          QImage image( inMat.data, inMat.cols, inMat.rows, inMat.step, QImage::Format_Indexed8 );
+          QImage image( inMat.data, inMat.cols, inMat.rows, inMat.step, QImage::Format_Indexed8 );
 
-//          image.setColorTable( sColorTable );
+          image.setColorTable( sColorTable );
 
-//          return image;
-//       }
+          return image;
+       }
 
-//       default:
-//          //qWarning() << "ASM::cvMatToQImage() - cv::Mat image type not handled in switch:" << inMat.type();
-//          break;
-//    }
+       default:
+          //qWarning() << "ASM::cvMatToQImage() - cv::Mat image type not handled in switch:" << inMat.type();
+          break;
+    }
 
-//    return QImage();
-//}
+    return QImage();
+}
