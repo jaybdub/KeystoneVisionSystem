@@ -5,6 +5,7 @@
 #include <QSerialPort>
 #include <QPushButton>
 #include <QComboBox>
+#include <QVBoxLayout>
 
 class SerialPortSettingsWidget : public QWidget
 {
@@ -40,6 +41,7 @@ private:
     QComboBox *parityComboBox;
     QComboBox *stopBitsComboBox;
     QComboBox *dataBitsComboBox;
+    QVBoxLayout *mainVBoxLayout;
 
 };
 

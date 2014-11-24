@@ -13,6 +13,8 @@ SerialPortSettingsWidget::SerialPortSettingsWidget(QWidget *parent) :
     stopBitsComboBox->hide();
     dataBitsComboBox = new QComboBox(this);
     dataBitsComboBox->hide();
+    mainVBoxLayout = new QVBoxLayout;
+    this->setLayout(mainVBoxLayout);
 }
 
 void SerialPortSettingsWidget::handleBaudRateChanged(qint32 baudRate)

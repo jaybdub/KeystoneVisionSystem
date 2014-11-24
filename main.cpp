@@ -19,6 +19,7 @@
 #include "camerasettingswidget.h"
 #include "opencvcamera.h"
 #include "cameraviewportwidget.h"
+#include "communicationwidget.h"
 
 int main(int argc, char *argv[])
 {
@@ -59,6 +60,9 @@ int main(int argc, char *argv[])
     //qDebug() << marker->toQString();
     //SerialPortTerminalWidget *sptw = new SerialPortTerminalWidget;
     //sptw->show();
+    QSerialPort *sp = new QSerialPort();
+    CommunicationWidget *cw = new CommunicationWidget(sp);
+    cw->show();
     MainWindow *mw = new MainWindow;
     mw->show();
     return a.exec();

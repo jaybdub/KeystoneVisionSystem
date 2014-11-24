@@ -39,6 +39,8 @@ void MarkerRequestQueue::handleMarkersDetected(QList<Marker> markers)
                 emit markerRequestMatched(markers.at(i));
                 emit markerRequestMatched(markerRequests.at(j));
                 emit markerRequestMatched(markers.at(i).id);
+
+                //Remove request from queue
             }
         }
     }

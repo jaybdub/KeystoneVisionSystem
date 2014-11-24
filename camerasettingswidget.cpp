@@ -9,10 +9,13 @@ CameraSettingsWidget::CameraSettingsWidget(QWidget *parent) :
     resolutionComboBox = new QComboBox(this);
     sharpnessLabel = new QLabel("Sharpness",this);
     sharpnessSlider = new QSlider(Qt::Horizontal, this);
+    sharpnessSlider->setRange(0,255);
     brightnessLabel = new QLabel("Brightness",this);
     brightnessSlider = new QSlider(Qt::Horizontal, this);
+    brightnessSlider->setRange(0,255);
     focusAbsoluteLabel = new QLabel("Focus",this);
     focusAbsoluteSlider = new QSlider(Qt::Horizontal, this);
+    focusAbsoluteSlider->setRange(0,255);
     autofocusEnabledCheckBox = new QCheckBox("Autofocus Enabled", this);
 
     mainGridLayout = new QGridLayout(this);
@@ -151,6 +154,7 @@ void CameraSettingsWidget::handleBrightnessSliderChanged()
 void CameraSettingsWidget::handleAutofocusEnabledCheckBoxChanged()
 {
     emit autofocusEnabledChanged(autofocusEnabled());
+    emit autofocusEnabledChanged(focusAbsolute());
 }
 
 void CameraSettingsWidget::handleFocusAbsoluteSliderChanged()

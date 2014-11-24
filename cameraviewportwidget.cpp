@@ -9,8 +9,6 @@ CameraViewportWidget::CameraViewportWidget(QWidget *parent) :
     mainVBoxLayout = new QVBoxLayout(this);
     this->setLayout(mainVBoxLayout);
     mainVBoxLayout->addWidget(imageLabel);
-
-
 }
 
 void CameraViewportWidget::setImage(QImage *image)
@@ -19,3 +17,7 @@ void CameraViewportWidget::setImage(QImage *image)
     imageLabel->setPixmap(QPixmap::fromImage(qImage->scaled(imageLabel->size(),Qt::KeepAspectRatio)));
 }
 
+//void CameraViewportWidget::resizeEvent(QResizeEvent* event)
+//{
+//    imageLabel->setPixmap(qImage.scaled(this->size(), Qt::KeepAspectRatio, Qt::SmoothTransformation));
+//}

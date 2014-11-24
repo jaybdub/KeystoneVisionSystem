@@ -28,6 +28,7 @@ signals:
     void brightnessChanged(int brightness);
     void autofocusEnabledChanged(bool autofocusEnabled);
     void focusAbsoluteChanged(int focusAbsolute);
+    void autofocusEnabledChanged(int focusAbsolute);
 
 public slots:
     void setDeviceId(int deviceId);
@@ -38,6 +39,7 @@ public slots:
     void setFocusAbsolute(int focusAbsolute);
     void setDeviceIdOptions(QList<int> deviceIds);
     void setResolutionOptions(QList<QSize> resolutions);
+
 private slots:
     void handleDeviceIdComboBoxIndexChanged();
     void handleResolutionComboBoxIndexChanged();
@@ -46,6 +48,7 @@ private slots:
     void handleAutofocusEnabledCheckBoxChanged();
     void handleFocusAbsoluteSliderChanged();
     void disableFocusAbsoluteSlider(bool disabled);
+
 private:
     QLabel *deviceIdLabel;
     QLabel *resolutionLabel;

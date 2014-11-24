@@ -28,7 +28,8 @@ SOURCES += main.cpp\
     pose.cpp \
     camerasettingswidget.cpp \
     cameraviewportwidget.cpp \
-    opencvcamera.cpp
+    opencvcamera.cpp \
+    serialparser.cpp
 
 HEADERS  += mainwindow.h \
     serialportwidget.h \
@@ -45,7 +46,8 @@ HEADERS  += mainwindow.h \
     pose.h \
     camerasettingswidget.h \
     cameraviewportwidget.h \
-    opencvcamera.h
+    opencvcamera.h \
+    serialparser.h
 
 FORMS    += mainwindow.ui
 

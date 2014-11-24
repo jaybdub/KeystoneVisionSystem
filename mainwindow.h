@@ -9,7 +9,7 @@
 #include "opencvcamera.h"
 #include <QTimer>
 #include <QHBoxLayout>
-
+#include "linuxvideocontrol.h"
 namespace Ui {
 class MainWindow;
 }
@@ -26,6 +26,7 @@ private:
     CameraSettingsWidget *cameraSettingsWidget;
     CameraViewportWidget *cameraViewportWidget;
     OpenCvCamera *openCvCamera;
+    LinuxVideoControl *linuxVideoControl;
     QTimer *cameraQTimer;
     Ui::MainWindow *ui;
     QHBoxLayout *mainQHBoxLayout;
